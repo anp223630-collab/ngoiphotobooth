@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đánh Giá Nhân Viên - Ngói Photobooth</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+background:#d8c3a5;
+background-image:url("https://www.transparenttextures.com/patterns/old-wall.png");
+font-family:Arial;
+text-align:center;
+}
+
+.logo{
+font-family:'Bebas Neue', sans-serif;
+font-size:80px;
+color:#7b0f0f;
+letter-spacing:4px;
+margin-top:40px;
+}
+
+.sub{
+font-family:'Bebas Neue', sans-serif;
+font-size:35px;
+color:#7b0f0f;
+letter-spacing:6px;
+margin-bottom:30px;
+}
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+}
+
+.card{
+background:white;
+width:250px;
+padding:20px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.stars span{
+font-size:30px;
+cursor:pointer;
+color:gray;
+}
+
+.stars span.active{
+color:gold;
+}
+
+.avg{
+margin-top:10px;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="logo">ngói</div>
+<div class="sub">photobooth</div>
+
+<h2>Đánh Giá Nhân Viên</h2>
+
+<div class="container">
+
+<div class="card" data-name="Phong">
+<h3>Phong</h3>
+<div class="stars">
+<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+</div>
+<div class="avg"></div>
+</div>
+
+<div class="card" data-name="LinhNgoc">
+<h3>Linh Ngọc</h3>
+<div class="stars">
+<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+</div>
+<div class="avg"></div>
+</div>
+
+<div class="card" data-name="QuangVinh">
+<h3>Quang Vinh</h3>
+<div class="stars">
+<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+</div>
+<div class="avg"></div>
+</div>
+
+<div class="card" data-name="ChiQuyet">
+<h3>Chí Quyết</h3>
+<div class="stars">
+<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+</div>
+<div class="avg"></div>
+</div>
+
+</div>
+
+<script>
+
+function loadData(name){
+let saved = localStorage.getItem(name)
+if(saved){
+return JSON.parse(saved)
+}
+return {total:0,count:0}
+}
+
+function saveData(name,data){
+localStorage.setItem(name,JSON.stringify(data))
+}
+
+document.querySelectorAll(".card").forEach(card=>{
+
+let name = card.dataset.name
+let stars = card.querySelectorAll(".stars span")
+let avgText = card.querySelector(".avg")
+
+let data = loadData(name)
+
+updateUI()
+
+stars.forEach((star,index)=>{
+
+star.onclick=function(){
+
+stars.forEach(s=>s.classList.remove("active"))
+
+for(let i=0;i<=index;i++){
+stars[i].classList.add("active")
+}
+
+let score = index+1
+
+data.total += score
+data.count += 1
+
+saveData(name,data)
+
+updateUI()
+
+}
+
+})
+
+function updateUI(){
+let avg = data.count ? (data.total/data.count).toFixed(2) : 0
+avgText.innerText = "Trung bình: "+avg+" ⭐ ("+data.count+" lượt)"
+}
+
+})
+
+</script>
+
+</body>
+</html>
